@@ -1,16 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-
-const allProducts = [
-  { id: 1, name: "Classic White Sneakers", price: 49.99, category: "men's fashion", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" },
-  { id: 2, name: "Leather Crossbody Bag", price: 79.99, category: "women's fashion", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400" },
-  { id: 3, name: "Wireless Headphones", price: 129.99, category: "electronics", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
-  { id: 4, name: "Minimalist Watch", price: 89.99, category: "men's fashion", img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=400" },
-  { id: 5, name: "Summer Floral Dress", price: 59.99, category: "women's fashion", img: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400" },
-  { id: 6, name: "Smart LED Lamp", price: 34.99, category: "home & living", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400" },
-  { id: 7, name: "Bluetooth Speaker", price: 45.99, category: "electronics", img: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400" },
-  { id: 8, name: "Denim Jacket", price: 69.99, category: "men's fashion", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400" },
-];
 
 const categories = ["all", "men's fashion", "women's fashion", "electronics", "home & living"];
 
@@ -19,10 +8,28 @@ const Products = () => {
   const activeCategory = searchParams.get("category") || "all";
   const [sortBy, setSortBy] = useState("default");
   const [search, setSearch] = useState("");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  let filtered = activeCategory === "all"
-    ? allProducts
-    : allProducts.filter((p) => p.category === activeCategory);
+  useEffect(() => {
+    setLoading(true);
+    const url = activeCategory === "all"
+      ? "http://localhost:5000/api/products"
+      : `http://localhost:5000/api/products?category=${encodeURIComponent(activeCategory)}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [activeCategory]);
+
+  let filtered = products;
 
   if (search.trim()) {
     filtered = filtered.filter((p) =>
@@ -86,14 +93,16 @@ const Products = () => {
             </select>
           </div>
 
-          {filtered.length === 0 ? (
+          {loading ? (
+            <p className="text-gray-500 text-center py-20">Loading products...</p>
+          ) : filtered.length === 0 ? (
             <p className="text-gray-500 text-center py-20">No products found.</p>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {filtered.map((p) => (
                 <Link
-                  to={`/products/${p.id}`}
-                  key={p.id}
+                  to={`/products/${p._id}`}
+                  key={p._id}
                   className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group"
                 >
                   <div className="overflow-hidden h-48">

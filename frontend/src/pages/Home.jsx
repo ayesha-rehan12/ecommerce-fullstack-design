@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const categories = [
@@ -7,14 +8,15 @@ const categories = [
   { name: "Home & Living", img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400" },
 ];
 
-const featuredProducts = [
-  { id: 1, name: "Classic White Sneakers", price: 49.99, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" },
-  { id: 2, name: "Leather Crossbody Bag", price: 79.99, img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400" },
-  { id: 3, name: "Wireless Headphones", price: 129.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
-  { id: 4, name: "Minimalist Watch", price: 89.99, img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=400" },
-];
-
 const Home = () => {
+    const [featuredProducts, setFeaturedProducts] = useState([]);
+
+useEffect(() => {
+  fetch("http://localhost:5000/api/products")
+    .then((res) => res.json())
+    .then((data) => setFeaturedProducts(data.slice(0, 4)))
+    .catch((err) => console.error(err));
+}, []);
   return (
     <div>
       {/* Hero section */}
@@ -63,6 +65,7 @@ const Home = () => {
           ))}
         </div>
       </section>
+      
 
       {/* Featured products */}
       <section className="bg-gray-50 py-16">
@@ -75,7 +78,7 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {featuredProducts.map((p) => (
-              <div key={p.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+              <div key={p._id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
                 <div className="overflow-hidden h-48">
                   <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 </div>
