@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 // Placeholder pages (we'll build these next)
-const Home = () => <div className="min-h-screen flex items-center justify-center text-2xl text-gray-700">Home Page — Coming Soon</div>;
+import Home from "./pages/Home";
 const Products = () => <div className="min-h-screen flex items-center justify-center text-2xl text-gray-700">Products Page — Coming Soon</div>;
 const Cart = () => <div className="min-h-screen flex items-center justify-center text-2xl text-gray-700">Cart Page — Coming Soon</div>;
 const Login = () => <div className="min-h-screen flex items-center justify-center text-2xl text-gray-700">Login Page — Coming Soon</div>;
