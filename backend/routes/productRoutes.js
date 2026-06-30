@@ -1,5 +1,6 @@
 const express = require("express");
 const Product = require("../models/Product");
+const { protect, adminOnly } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -26,8 +27,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// @route   POST /api/products  (admin - create)
-router.post("/", async (req, res) => {
+// @route   POST /api/products  (admin only)
+router.post("/", protect, adminOnly, async (req, res) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
@@ -38,8 +39,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-// @route   PUT /api/products/:id  (admin - update)
-router.put("/:id", async (req, res) => {
+// @route   PUT /api/products/:id  (admin only)
+router.put("/:id", protect, adminOnly, async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -51,8 +52,8 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// @route   DELETE /api/products/:id  (admin - delete)
-router.delete("/:id", async (req, res) => {
+// @route   DELETE /api/products/:id  (admin only)
+router.delete("/:id", protect, adminOnly, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) return res.status(404).json({ message: "Product not found" });

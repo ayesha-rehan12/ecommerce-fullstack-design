@@ -45,6 +45,12 @@ const { user, logout } = useAuth();
             </Link>
           </div>
 
+          {user?.role === "admin" && (
+            <Link to="/admin" className="text-orange-500 hover:text-orange-600 text-sm font-medium">
+              Admin
+            </Link>
+          )} 
+             
           {/* Search bar */}
           <div className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2 w-64">
             <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
