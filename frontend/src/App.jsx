@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
-const Cart = () => <div className="min-h-screen flex items-center justify-center text-2xl text-gray-700">Cart Page — Coming Soon</div>;
+import Cart from "./pages/Cart";
 const Login = () => <div className="min-h-screen flex items-center justify-center text-2xl text-gray-700">Login Page — Coming Soon</div>;
 
 function App() {

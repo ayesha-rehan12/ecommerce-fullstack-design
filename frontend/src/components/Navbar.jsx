@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/useCart";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cartCount] = useState(0);
+const { cartCount } = useCart();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -31,10 +32,10 @@ const Navbar = () => {
             <Link to="/products" className="text-gray-700 hover:text-orange-500 text-sm font-medium transition-colors">
               Products
             </Link>
-            <Link to="/products?category=men" className="text-gray-700 hover:text-orange-500 text-sm font-medium transition-colors">
+            <Link to="/products?category=men%27s+fashion" className="text-gray-700 hover:text-orange-500 text-sm font-medium transition-colors">
               Men
             </Link>
-            <Link to="/products?category=women" className="text-gray-700 hover:text-orange-500 text-sm font-medium transition-colors">
+            <Link to="/products?category=women%27s+fashion" className="text-gray-700 hover:text-orange-500 text-sm font-medium transition-colors">
               Women
             </Link>
             <Link to="/products?category=electronics" className="text-gray-700 hover:text-orange-500 text-sm font-medium transition-colors">

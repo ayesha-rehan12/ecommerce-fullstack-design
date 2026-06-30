@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useCart } from "../context/useCart";
 
 const allProducts = [
   { id: 1, name: "Classic White Sneakers", price: 49.99, category: "men's fashion", desc: "Comfortable everyday sneakers made with breathable canvas and a durable rubber sole. Perfect for casual outings.", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600" },
@@ -17,6 +18,7 @@ const ProductDetails = () => {
   const product = allProducts.find((p) => p.id === parseInt(id));
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const { addToCart } = useCart();
 
   if (!product) {
     return (
@@ -27,10 +29,11 @@ const ProductDetails = () => {
     );
   }
 
-  const handleAddToCart = () => {
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
+const handleAddToCart = () => {
+  addToCart(product, quantity);
+  setAdded(true);
+  setTimeout(() => setAdded(false), 2000);
+};
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
