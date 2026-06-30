@@ -11,23 +11,34 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+useEffect(() => {
+  let ignore = false;
+
+  const fetchProducts = async () => {
     setLoading(true);
     const url = activeCategory === "all"
       ? "http://localhost:5000/api/products"
       : `http://localhost:5000/api/products?category=${encodeURIComponent(activeCategory)}`;
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!ignore) {
         setProducts(data);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [activeCategory]);
+      }
+    } catch (err) {
+      console.error(err);
+      if (!ignore) setLoading(false);
+    }
+  };
+
+  fetchProducts();
+
+  return () => {
+    ignore = true;
+  };
+}, [activeCategory]);
 
   let filtered = products;
 
