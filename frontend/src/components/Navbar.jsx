@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/useCart";
+import { useAuth } from "../context/useAuth";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 const { cartCount } = useCart();
+const { user, logout } = useAuth();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -70,12 +72,18 @@ const { cartCount } = useCart();
             </Link>
 
             {/* User */}
-            <Link to="/login" className="hidden md:flex items-center gap-1 text-gray-700 hover:text-orange-500 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span className="text-sm font-medium">Login</span>
-            </Link>
+              {user ? (
+                <button onClick={logout} className="hidden md:flex items-center gap-1 text-gray-700 hover:text-orange-500 text-sm font-medium transition-colors">
+                  Hi, {user.name?.split(" ")[0]} (Logout)
+                </button>
+              ) : (
+                <Link to="/login" className="hidden md:flex items-center gap-1 text-gray-700 hover:text-orange-500 transition-colors">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span className="text-sm font-medium">Login</span>
+                </Link>
+              )}
 
             {/* Mobile menu button */}
             <button
